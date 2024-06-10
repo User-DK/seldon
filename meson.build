@@ -20,11 +20,18 @@ sources_seldon = [
   'src/run_model.cpp'
 ]
 
-# Static library for bindings
+# both static and shared library for bindings
 # -----------------------------------
-symbol_visibility = 'default' 
+symbol_visibility = 'default'
+if get_option('default_library') == 'static'
+  # Ensure that if we link a static library into a shared library,
+  # private symbols don't get re-exported.
+  # Kanged from https://github.com/ERGO-Code/HiGHS/pull/1737/files
+  symbol_visibility = 'inlineshidden'
+endif
+
 # only generating static library
-seldon_lib = static_library('seldon',
+seldon_lib = both_libraries('seldon',
   sources_seldon,
   install:true,
   dependencies: deps,
@@ -35,7 +42,9 @@ seldon_lib = static_library('seldon',
 )
 
 seldon_static_dep = declare_dependency(include_directories:incdir,
-  link_with : seldon_lib, dependencies: deps)
+  link_with : seldon_lib.get_static_lib(), dependencies: deps)
+seldon_shared_dep = declare_dependency(include_directories : incdir,
+  link_with : seldon_lib.get_shared_lib(), dependencies: deps)
 # ------------------------------------
 
 if get_option('build_exe')
