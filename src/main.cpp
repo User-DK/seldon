@@ -36,12 +36,6 @@ int main( int argc, char * argv[] )
     std::optional<std::string> output_dir_path_cli = program.present<std::string>( "-o" );
     fs::path output_dir_path                       = output_dir_path_cli.value_or( fs::path( "./output" ) );
 
-    fmt::print( "=================================================================\n" );
-
-    fmt::print( "Using input file: {}\n", config_file_path.string() );
-    fmt::print( "Output directory path set to: {}\n", output_dir_path.string() );
-    fs::create_directories( output_dir_path ); // Create the output directory
-
     run_model(config_file_path, agent_file ,network_file, output_dir_path);
 
     return 0;

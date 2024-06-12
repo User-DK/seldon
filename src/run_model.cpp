@@ -16,6 +16,13 @@ namespace fs = std::filesystem;
 
 void run_model(const fs::path config_file_path, std::optional<std::string> agent_file,std::optional<std::string> network_file, const fs::path output_dir_path)
 {
+    fmt::print( "=================================================================\n" );
+
+    fmt::print( "Using input file: {}\n", config_file_path.string() );
+    fmt::print( "Output directory path set to: {}\n", output_dir_path.string() );
+    fs::create_directories( output_dir_path ); // Create the output directory
+
+    
     auto simulation_options = Seldon::Config::parse_config_file( config_file_path.string() );
     Seldon::Config::validate_settings( simulation_options );
     Seldon::Config::print_settings( simulation_options );
