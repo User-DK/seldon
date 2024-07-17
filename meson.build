@@ -43,9 +43,9 @@ seldon_lib = both_libraries('seldon',
   cpp_args : _args,
 )
 
-seldon_static_dep = declare_dependency(include_directories:[_incdir, include_directories('src')],
+seldon_static_dep = declare_dependency(include_directories:_incdir,
   link_with : seldon_lib.get_static_lib(), dependencies: _deps)
-seldon_shared_dep = declare_dependency(include_directories : [_incdir, include_directories('src')],
+seldon_shared_dep = declare_dependency(include_directories : _incdir,
   link_with : seldon_lib.get_shared_lib(), dependencies: _deps)
 
 # ------------------------------------
